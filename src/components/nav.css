@@ -1,0 +1,37 @@
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #282c34;
+}
+
+.navbar_logo {
+    height: 70px;
+    width: auto;
+    padding: 0.5rem;
+}
+
+.navbar_home_link, .navbar_admin_link {
+    text-decoration: none;
+    color: gainsboro;
+    font-size: 16px;
+}
+
+.navbar_home_link:hover {
+    color: aqua;
+    font-size: 18px;
+}
+
+.navbar_admin_link:hover {
+    color: dodgerblue;
+    font-size: 18px;
+}
+
+
+.navbar_links {
+    width: 20%;
+    padding-right: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;  
+}
