@@ -4,6 +4,7 @@ import App from './App';
 import Homepage from './pages/home/home';
 import Nav from './components/nav';
 import Admin from './pages/admin/admin';
+import Dashboard from './pages/admin/dashboard';
 
 function AppRouter() {
   return (
@@ -23,6 +24,7 @@ function AppRouter() {
             <Admin />
           </>
           }/>
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </Router>
   );
