@@ -2,19 +2,34 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const { Pool } = require('pg');
-// import { Request, Response } from 'express';
 const app = express();
 const port = 5000;
+
+require('dotenv').config({ path: 'src/.env' });
 
 app.use(cors());
 app.use(bodyParser.json());
 
+const user = process.env.DB_USER;
+const password = String(process.env.DB_PASS);
+const host = process.env.DB_HOST;
+const database = process.env.ADMIN_DB_NAME;
+const dbport = process.env.PORT;
+
 const pool = new Pool({
-  user: 'postgres',
-  host: 'localhost',
-  database: 'astronomy_admin',
-  password: 'mahir',
-  port: 5432,
+  user:user,
+  password:password,
+  host:host,
+  database:database,
+  port:parseInt(dbport, 10),
+});
+
+console.log({
+  DB_USER: process.env.DB_USER,
+  DB_PASS: process.env.DB_PASS,
+  DB_HOST: process.env.DB_HOST,
+  ADMIN_DB_NAME: process.env.ADMIN_DB_NAME,
+  PORT: process.env.PORT,
 });
 
 // Endpoint for login verification
