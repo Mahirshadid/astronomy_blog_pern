@@ -43,22 +43,38 @@ const Dashboard = () => {
         try {
           const response = await fetch(`http://localhost:5001/dashboard/posts/${postId}`);
           const data = await response.json();
-          if (data) {
+  
+          if (data && data.id) { // Check if data exists and contains a valid ID
             setTitle(data.title);
             setBody(data.body);
             setImage(null);
+            setError(null);  // Clear error if post is found
           } else {
             setError('Post not found');
+            // Clear fields if no post found
+            setTitle('');
+            setBody('');
+            setImage(null);
           }
         } catch (error) {
           setError('Error fetching post');
           console.error(error);
+          setTitle('');  // Clear title
+          setBody('');   // Clear body
+          setImage(null); // Clear image
         }
+      } else {
+        // Reset everything when postId is empty
+        setTitle('');
+        setBody('');
+        setImage(null);
+        setError(null);
       }
     };
-
+  
     fetchPostById();
-  }, [postId]);
+  }, [postId]); // Re-run the effect when postId changes
+  
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
