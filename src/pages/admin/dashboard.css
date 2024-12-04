@@ -1,0 +1,71 @@
+.dashboard_items {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    
+}
+
+.dashboard_items_form {
+    display: flex;
+    align-items: start;
+    flex-direction: column;
+    width: 50%;
+}
+
+.dashboard_items_form_input {
+    height: 2rem;
+    width: 100%;
+    margin: 0.8rem 0.8rem 0 0;
+
+    border: 1px solid gray;
+    border-radius: 0.3rem;
+    font-family: fantasy;
+}
+
+#body {
+    height: 15rem;
+}
+
+.dashboard_items_form_image {
+    height: 2rem;
+    width: 100%;
+    margin: 0 0.8rem 0 0;
+    font-family: fantasy;
+    color: gray;
+}
+
+.dashboard_items_form_submit {
+    padding: 0.5rem;
+    width: 100%;
+    margin-top: 0.5rem;
+    border: 0.1rem solid #282c34;
+    border-radius: 0.3rem;
+    background-color: #282c34;
+    color: gainsboro;
+
+    font-family: fantasy;
+}
+
+.dashboard_items_form_submit:hover {
+    background-color: white;
+    color: gray;
+    cursor: pointer;
+}
+
+.posts_table {
+    width: 90%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+  
+.posts_table th, .posts_table td {
+    border: 1px solid #ccc;
+    padding: 0.5rem;
+    text-align: left;
+}
+  
+.posts_table th {
+    background-color: #f4f4f4;
+}
+  

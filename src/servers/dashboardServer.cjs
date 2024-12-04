@@ -3,8 +3,6 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const { Pool } = require('pg');
 const multer = require('multer');
-const fs = require('fs');
-const path = require('path');
 const app = express();
 const port = 5001;
 
@@ -13,11 +11,9 @@ require('dotenv').config({ path: 'src/.env' });
 app.use(cors());
 app.use(bodyParser.json());
 
-// Setup multer for handling form-data, but we won't save the file locally
-const storage = multer.memoryStorage();  // Store image in memory, not in a file
+const storage = multer.memoryStorage(); // Store image in memory
 const upload = multer({ storage });
 
-// Database connection setup
 const user = process.env.DB_USER;
 const password = String(process.env.DB_PASS);
 const host = process.env.DB_HOST;
@@ -40,15 +36,15 @@ console.log({
   PORT: process.env.PORT,
 });
 
-// Handle POST request to submit form data (including image as BYTEA)
+// POST: Handle form submission (store post with image)
 app.post('/dashboard', upload.single('image'), async (req, res) => {
   const { title, body } = req.body;
-  const imageBuffer = req.file ? req.file.buffer : null; // Get the image as buffer
+  const imageBuffer = req.file ? req.file.buffer : null;
 
-  if (!imageBuffer) {
+  if (!title || !body || !imageBuffer) {
     return res.status(400).json({
       success: false,
-      message: 'Please provide an image.',
+      message: 'Please provide all required fields (title, body, image).',
     });
   }
 
@@ -56,27 +52,109 @@ app.post('/dashboard', upload.single('image'), async (req, res) => {
     // Insert the form data including the image into the database
     const result = await pool.query(
       'INSERT INTO posts (title, body, image) VALUES ($1, $2, $3) RETURNING *',
-      [title, body, imageBuffer] // Insert the image as BYTEA
+      [title, body, imageBuffer]
     );
 
-    if (result.rows.length > 0) {
-      res.status(200).json({
-        success: true,
-        message: 'Post created successfully!',
-        post: result.rows[0],
-      });
-    } else {
-      res.status(400).json({
-        success: false,
-        message: 'Failed to create post',
-      });
-    }
+    res.status(200).json({
+      success: true,
+      message: 'Post created successfully!',
+      post: result.rows[0],
+    });
   } catch (error) {
     console.error('Error inserting data:', error);
     res.status(500).json({
       success: false,
       message: 'Internal server error',
     });
+  }
+});
+
+// GET: Fetch all posts (including image URLs)
+app.get('/dashboard/posts', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT id, title, body, image FROM posts');
+
+    const posts = result.rows.map((row) => ({
+      id: row.id,
+      title: row.title,
+      body: row.body,
+      image: row.image ? `data:image/*;base64,${row.image.toString('base64')}` : null,
+    }));
+
+    res.status(200).json(posts);
+  } catch (error) {
+    console.error('Error fetching posts:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Internal server error',
+    });
+  }
+});
+
+// Get post by ID
+app.get('/dashboard/posts/:id', async (req, res) => {
+  const postId = req.params.id;
+
+  try {
+    const result = await pool.query('SELECT * FROM posts WHERE id = $1', [postId]);
+    const post = result.rows[0];
+    if (post) {
+      res.status(200).json(post);
+    } else {
+      res.status(404).json({ message: 'Post not found' });
+    }
+  } catch (error) {
+    console.error('Error fetching post:', error);
+    res.status(500).json({ message: 'Error fetching post' });
+  }
+});
+
+// Update post
+app.put('/dashboard/posts/:id', upload.single('image'), async (req, res) => {
+  const { title, body } = req.body;
+  const imageBuffer = req.file ? req.file.buffer : null;
+  const postId = req.params.id;
+
+  if (!title || !body) {
+    return res.status(400).json({
+      success: false,
+      message: 'Title and body are required!',
+    });
+  }
+
+  try {
+    const query = `
+      UPDATE posts SET title = $1, body = $2, image = $3
+      WHERE id = $4 RETURNING *`;
+    const values = [title, body, imageBuffer, postId];
+
+    const result = await pool.query(query, values);
+    const updatedPost = result.rows[0];
+
+    if (updatedPost) {
+      res.status(200).json({ success: true, post: updatedPost });
+    } else {
+      res.status(404).json({ success: false, message: 'Post not found' });
+    }
+  } catch (error) {
+    console.error('Error updating post:', error);
+    res.status(500).json({ success: false, message: 'Error updating post' });
+  }
+});
+
+// Delete post
+app.delete('/dashboard/posts/:id', async (req, res) => {
+  const postId = req.params.id;
+
+  try {
+    const result = await pool.query('DELETE FROM posts WHERE id = $1 RETURNING *', [postId]);
+    if (result.rowCount === 0) {
+      return res.status(404).json({ success: false, message: 'Post not found' });
+    }
+    res.status(200).json({ success: true, message: 'Post deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting post:', error);
+    res.status(500).json({ success: false, message: 'Error deleting post' });
   }
 });
 
