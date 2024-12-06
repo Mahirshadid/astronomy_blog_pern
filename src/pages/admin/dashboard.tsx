@@ -233,7 +233,7 @@ const Dashboard = () => {
       {error && <p className="error_message" style={{ color: 'red' }}>{error}</p>}
 
       {/* Input for post ID to update or delete */}
-      <div>
+      <div className='post_id_items'>
         <h3>Enter Post ID to Update or Delete:</h3>
         <input
           type="number"

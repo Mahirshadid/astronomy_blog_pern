@@ -2,7 +2,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 50vh;
+    flex-direction: column;
+
+}
+
+.admin_login h2, .admin_login_hint {
+    width: 50%;
+    text-align: center;
 }
 
 .admin_login_form {
@@ -25,6 +31,7 @@
     margin-top: 0.5rem;
     border: 0.1rem solid gray;
     border-radius: 0.3rem;
+    min-width: 10rem;
 
     height: 2rem;
 }

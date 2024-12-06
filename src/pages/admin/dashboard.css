@@ -53,6 +53,13 @@
     cursor: pointer;
 }
 
+.post_id_items {
+    display: flex;
+    align-items: start;
+    flex-direction: column;
+    width: 50%;
+}
+
 .posts_table {
     width: 90%;
     border-collapse: collapse;
@@ -72,7 +79,7 @@
 .logout_button {
     position: absolute;
     top: 10px;
-    right: 10px;
+    right: 5%;
     background-color: #ff4d4d;
     color: white;
     border: none;
@@ -85,3 +92,9 @@
   .logout_button:hover {
     background-color: #ff1a1a;
   }
+
+@media screen and (max-width: 390px) {
+    .logout_button {
+        background-color: #ff4d4d49;
+    }
+}

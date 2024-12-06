@@ -4,6 +4,7 @@
     justify-content: left;
     background-color: #282c34;
     width: 100%;
+    min-height: 30px;
 }
 
 .navbar_logo {
@@ -20,13 +21,18 @@
 .navbar_links {
     width: 100%;
     position: absolute;
-    left: 70%;
+    left: -5%;
+    display: flex;
+    align-items: center;
+    justify-content: right;
 }
 
 .navbar_home_link, .navbar_admin_link {
     text-decoration: none;
     color: gainsboro;
     font-size: 16px;
+
+    margin: 0 0 0.5rem 0.5rem;
 }
 
 .navbar_home_link:hover {
@@ -39,11 +45,14 @@
     font-size: 18px;
 }
 
+@media screen and (max-width: 670px) {
+    .navbar_title {
+        display: none;
+    }
+}
 
-.navbar_links {
-    width: 20%;
-    padding-right: 0.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-evenly;  
+@media screen and (max-width: 225px) {
+    .navbar_logo {
+        display: none;
+    }
 }

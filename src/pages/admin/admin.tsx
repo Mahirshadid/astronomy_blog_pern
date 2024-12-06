@@ -45,6 +45,8 @@ const Admin = () => {
 
   return (
     <div className='admin_login'>
+      <h2>Log in below</h2>
+      <p className='admin_login_hint'>If you are a guest and want to try the admin privilege, try this username: guest and password: 123.</p>
       <form className='admin_login_form' onSubmit={handleSubmit}>
         <input type='text' placeholder='Username' name='username' className='admin_login_form_input' 
           value={formData.username}
