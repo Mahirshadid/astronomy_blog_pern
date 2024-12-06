@@ -158,6 +158,12 @@ app.delete('/dashboard/posts/:id', async (req, res) => {
   }
 });
 
+// POST: Handle logout
+app.post('/logout', async (req, res) => {
+  res.status(200).json({ success: true, message: 'Logout successful' });
+});
+
+
 // Start server
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);

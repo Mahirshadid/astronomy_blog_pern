@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './dashboard.css';
 
 const Dashboard = () => {
@@ -8,6 +9,7 @@ const Dashboard = () => {
   const [error, setError] = useState<string | null>(null);
   const [posts, setPosts] = useState<any[]>([]); // State to store posts from the database
   const [postId, setPostId] = useState<number | null>(null); // State for post ID to update or delete
+  const navigate = useNavigate();
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value);
   const handleBodyChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => setBody(e.target.value);
@@ -166,8 +168,33 @@ const Dashboard = () => {
     imageWindow?.document.write(`<img src="${imageData}" alt="Post Image" style="width: 100%; height: auto;" />`);
   };
 
+  const handleLogout = async () => {
+    try {
+      console.log("Attempting logout..."); 
+      const response = await fetch('http://localhost:5001/logout', {
+        method: 'POST',
+      });
+  
+      const result = await response.json();
+      console.log("Logout response:", result); 
+  
+      if (response.ok && result.success) {
+        alert('Logout successful!');
+        navigate('/homepage');
+      } else {
+        setError(result.message || 'Logout failed. Please try again.');
+      }
+    } catch (error) {
+      console.log('Error during logout:', error);
+      setError('An error occurred while trying to log out.');
+    }
+  };
+
   return (
     <div className="dashboard_items">
+      <button className='logout_button' onClick={handleLogout}>
+        Logout
+      </button>
       <h1>Hello, Admin!</h1>
       <form className="dashboard_items_form" onSubmit={handleSubmit}>
         <p>Post your thoughts here:</p>

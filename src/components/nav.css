@@ -1,14 +1,26 @@
 .navbar {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: left;
     background-color: #282c34;
+    width: 100%;
 }
 
 .navbar_logo {
     height: 70px;
     width: auto;
     padding: 0.5rem;
+}
+
+.navbar_title {
+    color: gainsboro;
+    font-size: 25px;
+}
+
+.navbar_links {
+    width: 100%;
+    position: absolute;
+    left: 70%;
 }
 
 .navbar_home_link, .navbar_admin_link {

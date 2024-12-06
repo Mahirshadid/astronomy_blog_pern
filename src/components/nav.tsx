@@ -7,6 +7,7 @@ const nav = () => {
   return (
     <div className='navbar'>
       <img className='navbar_logo' src={logo} alt='Mahirs Astronomy Logo'/>
+      <p className='navbar_title'>Mahir's Astronomy</p>
       <div className='navbar_links'>
         <Link className='navbar_home_link' to="/homepage">Home</Link>
         <Link className='navbar_admin_link' to="/admin">Admin Panel</Link>
